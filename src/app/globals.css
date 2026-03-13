@@ -1,0 +1,225 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   ETAL — MINIMAL, MODERN UI
+   Brand: #229264 green · #FDED1B yellow · #131414 text
+   Type:  Poppins for all typography
+   Style: White-dominant, rounded, subtle shadows, soft accents
+   ============================================================ */
+
+/* ── Tokens ──────────────────────────────────────────────── */
+:root {
+  --green:       #229264;
+  --green-dark:  #1a7250;
+  --yellow:      #FDED1B;
+  --dark:        #131414;
+  --surface:     #ffffff;
+  --surface-2:   #f8f9fa;
+  --border:      #e8eaed;
+  --border-mid:  #d1d5db;
+  --muted:       #6b7280;
+}
+
+/* ── Base ────────────────────────────────────────────────── */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply font-body text-brand-dark bg-white;
+    line-height: 1.65;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-headline leading-tight;
+  }
+
+  ::selection {
+    background-color: var(--green);
+    color: white;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 3px;
+  }
+
+  ::-webkit-scrollbar            { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track      { background: var(--surface-2); }
+  ::-webkit-scrollbar-thumb      { background: var(--border-mid); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover{ background: var(--green); }
+}
+
+/* ── Components ──────────────────────────────────────────── */
+@layer components {
+
+  /* Layout */
+  .container-etal { @apply max-w-7xl mx-auto px-5 sm:px-8 lg:px-12; }
+  .section-pad    { @apply py-20 md:py-28; }
+  /* Use on the FIRST section of a page to clear the fixed 64px navbar */
+  .page-hero      { @apply pt-24 pb-16 md:pt-32 md:pb-20; }
+
+  /* ── Eyebrow label ──────────────────────────────────────── */
+  .eyebrow {
+    @apply font-body text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-green;
+  }
+
+  /* ── Buttons ──────────────────────────────────────────── */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full font-body font-medium
+           text-sm tracking-wide transition-all duration-200
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
+           focus-visible:ring-brand-green disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /* Solid green */
+  .btn-primary {
+    @apply btn bg-brand-green text-white px-6 py-2.5 hover:bg-brand-green-dark/90 active:scale-[0.98];
+  }
+
+  /* Outlined green */
+  .btn-outline {
+    @apply btn border border-brand-green text-brand-green px-6 py-2.5
+           hover:bg-brand-green/5 active:scale-[0.98];
+  }
+
+  /* Yellow accent */
+  .btn-accent {
+    @apply btn bg-brand-yellow text-brand-dark px-6 py-2.5
+           hover:bg-[#e8d800] active:scale-[0.98];
+  }
+
+  /* Subtle ghost */
+  .btn-ghost {
+    @apply btn text-brand-green hover:bg-brand-green/[0.06] px-4 py-2;
+  }
+
+  /* Outlined on dark bg */
+  .btn-outline-white {
+    @apply btn border border-white/25 text-white px-6 py-3
+           hover:border-white/60 hover:bg-white/10;
+  }
+
+  /* ── Inputs ───────────────────────────────────────────── */
+  .input-base {
+    @apply w-full rounded-xl border border-[#d1d5db] bg-white px-4 py-2.5 font-body text-sm
+           text-brand-dark placeholder-[#9ca3af]
+           transition-colors duration-150
+           focus:outline-none focus:border-brand-green focus:ring-1 focus:ring-brand-green/20;
+  }
+
+  .input-admin {
+    @apply w-full rounded-lg border border-[#e5e7eb] bg-white px-3.5 py-2.5 font-body text-sm
+           text-brand-dark placeholder-[#9ca3af]
+           transition-colors duration-150
+           focus:outline-none focus:border-brand-green focus:ring-1 focus:ring-brand-green/15;
+  }
+
+  /* ── Badges ───────────────────────────────────────────── */
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5
+           font-body text-[10px] font-semibold tracking-wide;
+  }
+  .badge-green  { @apply badge bg-brand-green/10 text-brand-green; }
+  .badge-gray   { @apply badge bg-[#f3f4f6] text-[#6b7280]; }
+  .badge-yellow { @apply badge bg-brand-yellow/25 text-amber-700; }
+  .badge-dark   { @apply badge bg-brand-dark/80 text-white; }
+
+  /* ── Cards ────────────────────────────────────────────── */
+  /* Light card — public site */
+  .card {
+    @apply rounded-2xl border border-[#e8eaed] bg-white transition-all duration-200
+           shadow-[0_1px_3px_rgba(15,23,42,0.03)]
+           hover:border-brand-green/50 hover:shadow-[0_8px_24px_rgba(34,146,100,0.08)];
+  }
+
+  /* ── Product card ─────────────────────────────────────── */
+  .product-card {
+    @apply card flex flex-col overflow-hidden;
+  }
+
+  .product-card-img {
+    @apply relative aspect-[4/3] overflow-hidden rounded-2xl bg-[#f8f9fa];
+  }
+
+  .product-card-body {
+    @apply flex flex-1 flex-col gap-1 p-5;
+  }
+
+  /* ── Download card ────────────────────────────────────── */
+  .download-card {
+    @apply flex cursor-pointer items-start gap-4 rounded-2xl border border-[#e8eaed] bg-white p-5
+           transition-all duration-150
+           hover:border-brand-green/60 hover:shadow-[0_10px_30px_rgba(15,23,42,0.04)];
+  }
+
+  /* ── Spec table (product detail) ─────────────────────── */
+  .spec-table             { @apply w-full font-body text-sm border-collapse; }
+  .spec-table th          { @apply text-left px-5 py-2.5 text-[10px] font-semibold
+                                   uppercase tracking-widest text-brand-green bg-brand-green/[0.06]; }
+  .spec-table td          { @apply px-5 py-3 border-b border-[#e8eaed] align-middle; }
+  .spec-table tr:last-child td { @apply border-b-0; }
+  .spec-table tbody tr:nth-child(even) td { @apply bg-[#f8f9fa]; }
+
+  /* ── Admin tables ─────────────────────────────────────── */
+  .admin-table            { @apply w-full font-body text-sm border-collapse; }
+  .admin-table thead tr   { @apply border-b border-[#e5e7eb]; }
+  .admin-table th         { @apply text-left px-5 py-3.5 text-[10px] font-semibold
+                                   uppercase tracking-widest text-[#9ca3af]; }
+  .admin-table tbody tr   { @apply border-b border-[#f3f4f6] hover:bg-[#fafafa] transition-colors; }
+  .admin-table td         { @apply px-5 py-4; }
+
+  /* ── Panel / form card (admin) ────────────────────────── */
+  .panel            { @apply bg-white border border-[#e5e7eb] rounded-2xl overflow-hidden
+                             shadow-[0_1px_3px_rgba(15,23,42,0.04)]; }
+  .panel-header     { @apply px-6 py-4 border-b border-[#f3f4f6]
+                             font-body text-xs font-semibold uppercase tracking-widest text-[#9ca3af]
+                             flex items-center justify-between; }
+  .panel-body       { @apply p-6; }
+
+  /* form-card = legacy alias for panel — keeps admin pages working */
+  .form-card        { @apply panel; }
+  .form-card-header { @apply panel-header; }
+  .form-card-body   { @apply panel-body; }
+
+  /* ── Stat card (admin) ────────────────────────────────── */
+  .stat-card        { @apply relative bg-white border border-[#e5e7eb] p-6 block rounded-2xl
+                             shadow-[0_1px_3px_rgba(15,23,42,0.04)]
+                             hover:border-brand-green/40 hover:shadow-[0_4px_16px_rgba(34,146,100,0.08)]
+                             transition-all duration-200; }
+
+  /* ── Number deco (letter placeholder when image is missing) */
+  .number-deco      { @apply font-headline leading-none select-none text-brand-gray-mid/50; }
+}
+
+/* ── Utilities ───────────────────────────────────────────── */
+@layer utilities {
+  .hide-scrollbar                    { scrollbar-width: none; -ms-overflow-style: none; }
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+
+  .arrow-nudge           { transition: transform 0.2s ease; }
+  .group:hover .arrow-nudge { transform: translateX(4px); }
+
+  .text-balance { text-wrap: balance; }
+}
+
+/* ── Keyframes ───────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.animate-fade-up { animation: fadeUp 0.5s ease-out forwards; }
+.animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
