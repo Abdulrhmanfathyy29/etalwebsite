@@ -46,7 +46,10 @@ export default function UploadDownloadPage() {
       .from('downloads')
       .getPublicUrl(filePath)
 
-    const { error: dbError } = await supabase.from('downloads').insert({
+const { error: dbError } = await (supabase as any)
+  .from('downloads')
+  .insert([
+    {
       title,
       description: description || null,
       file_type:   fileType as any,
@@ -55,7 +58,8 @@ export default function UploadDownloadPage() {
       file_size_bytes: file.size,
       mime_type:   file.type,
       is_public:   isPublic,
-    })
+  }
+  ])
 
     if (dbError) {
       setError(dbError.message)
