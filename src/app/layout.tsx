@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Poppins } from 'next/font/google'
+import { cn } from '@/lib/utils'
 import './globals.css'
 
 const poppins = Poppins({
@@ -55,8 +56,19 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={poppins.variable}>
-      <body className="font-body antialiased">
+    // Added scroll-smooth for native smooth anchor scrolling
+    <html lang="en" className={cn(poppins.variable, 'scroll-smooth')}>
+      <body 
+        className={cn(
+          'font-body antialiased',
+          // Global Structural Fixes: Ensures footer always pushed to bottom
+          'min-h-screen flex flex-col',
+          // Industrial Baseline Colors
+          'bg-[#fcfcfc] text-[#131414]',
+          // Branded Text Selection
+          'selection:bg-[#229264] selection:text-white'
+        )}
+      >
         {children}
       </body>
     </html>

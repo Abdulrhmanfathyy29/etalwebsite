@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { Download, Search, FileText, BookOpen, Award, PenLine, Book } from 'lucide-react'
-import { formatFileSize } from '@/lib/utils'
+import { Download, Search, FileText, BookOpen, Award, PenLine, Book, Database, Filter } from 'lucide-react'
+import { formatFileSize, cn } from '@/lib/utils'
 import type { DownloadWithCategory, DownloadCategory } from '@/types/database'
 
 const FILE_TYPE_ICONS: Record<string, React.ElementType> = {
@@ -15,12 +15,12 @@ const FILE_TYPE_ICONS: Record<string, React.ElementType> = {
 }
 
 const FILE_TYPE_COLORS: Record<string, string> = {
-  datasheet:   'text-brand-green bg-brand-green/10',
-  catalog:     'text-blue-600 bg-blue-50',
-  certificate: 'text-brand-yellow bg-brand-yellow/10 text-brand-dark',
-  drawing:     'text-purple-600 bg-purple-50',
-  manual:      'text-orange-500 bg-orange-50',
-  other:       'text-brand-gray bg-brand-gray-light',
+  datasheet:   'text-[#229264] bg-[#229264]/5 border-[#229264]/10',
+  catalog:     'text-blue-600 bg-blue-50 border-blue-100',
+  certificate: 'text-amber-600 bg-amber-50 border-amber-100',
+  drawing:     'text-purple-600 bg-purple-50 border-purple-100',
+  manual:      'text-orange-600 bg-orange-50 border-orange-100',
+  other:       'text-gray-500 bg-gray-50 border-gray-100',
 }
 
 interface Props {
@@ -54,93 +54,124 @@ export default function DownloadsClient({ downloads, categories }: Props) {
   }, [downloads, search, activeType, activeCategory])
 
   return (
-    <div className="min-h-screen bg-white">
-      <section className="section-pad pb-6">
-        <div className="container-etal space-y-6">
-          <div className="space-y-3">
-            <p className="eyebrow">Download library</p>
-            <h1 className="font-headline text-[clamp(2rem,4vw,2.6rem)] leading-none text-brand-dark">
-              Technical documents for the ETAL range.
+    <div className="min-h-screen bg-[#fcfcfc] pb-20">
+      
+      {/* ── 1. Hero / Engineering Header ── */}
+      <section className="relative pt-32 pb-20 bg-white rounded-b-[3.5rem] shadow-sm overflow-hidden border-b border-gray-100">
+        <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[radial-gradient(#229264_1px,transparent_1px)] bg-[size:32px_32px]" />
+        
+        <div className="container-etal relative z-10 space-y-12">
+          <div className="space-y-6 text-center lg:text-left">
+            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-[#229264]/5 border border-[#229264]/10">
+              <span className="h-2 w-2 rounded-full bg-[#229264] animate-pulse" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#229264]">Technical Library</span>
+            </div>
+            
+            <h1 className="font-headline font-bold text-[#131414] leading-[1.05]" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)' }}>
+              Precision <span className="text-[#229264]">Documentation.</span>
             </h1>
-            <p className="max-w-xl text-sm leading-relaxed text-brand-gray">
-              Datasheets, catalogs, certificates and drawings for panel builders, consultants
-              and contractors.
+            <p className="max-w-2xl mx-auto lg:mx-0 text-[16px] leading-relaxed text-[#131414]/60 font-medium">
+              Access engineering datasheets, IEC type-test certificates, and CAD drawings for ETAL components. Ready for deployment in your projects.
             </p>
           </div>
 
-          <div className="flex flex-col gap-4 border-t border-brand-gray-mid/60 pt-6 md:flex-row">
-            <div className="relative flex-1 max-w-md">
-              <Search
-                size={16}
-                className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-brand-gray"
-              />
-              <input
-                type="text"
-                placeholder="Search by title, product or description…"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="input-base pl-9"
-              />
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <FilterBtn active={activeType === 'all'} onClick={() => setActiveType('all')}>
-                All types
-              </FilterBtn>
-              {fileTypes.map((type) => (
-                <FilterBtn
-                  key={type}
-                  active={activeType === type}
-                  onClick={() => setActiveType(type)}
-                >
-                  {type.charAt(0).toUpperCase() + type.slice(1)}s
-                </FilterBtn>
-              ))}
-            </div>
-          </div>
+          {/* ── 2. Filter Console (Soft Pill Style) ── */}
+          <div className="bg-[#fcfcfc] p-4 rounded-[3rem] border border-gray-100 shadow-xl shadow-black/[0.02]">
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-center">
+              
+              {/* Pill Search Input */}
+              <div className="relative flex-1 group">
+                <Search
+                  size={18}
+                  className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#229264] transition-colors"
+                />
+                <input
+                  type="text"
+                  placeholder="Search assets by keyword..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="w-full rounded-full border border-gray-100 bg-white pl-14 pr-6 py-4 text-[14px] font-medium text-[#131414] outline-none transition-all focus:ring-4 focus:ring-[#229264]/10 focus:border-[#229264] placeholder:text-gray-300"
+                />
+              </div>
 
-          {categories.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              <FilterBtn
-                active={activeCategory === 'all'}
-                onClick={() => setActiveCategory('all')}
-                small
-              >
-                All categories
-              </FilterBtn>
-              {categories.map((cat) => (
+              {/* Pill Tabs Container */}
+              <div className="flex flex-wrap items-center gap-2 lg:pl-4 lg:border-l border-gray-200">
+                <div className="flex items-center gap-2 mr-2 text-gray-300">
+                  <Filter size={14} />
+                  <span className="text-[10px] font-bold uppercase tracking-widest">Type</span>
+                </div>
+                <FilterBtn active={activeType === 'all'} onClick={() => setActiveType('all')}>
+                  All Assets
+                </FilterBtn>
+                {fileTypes.map((type) => (
+                  <FilterBtn
+                    key={type}
+                    active={activeType === type}
+                    onClick={() => setActiveType(type)}
+                  >
+                    {type.charAt(0).toUpperCase() + type.slice(1)}s
+                  </FilterBtn>
+                ))}
+              </div>
+            </div>
+
+            {/* Sub-Filters (Categories) */}
+            {categories.length > 0 && (
+              <div className="flex flex-wrap items-center gap-2 mt-4 pt-4 border-t border-gray-50 px-4">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-gray-300 mr-2">Category:</span>
                 <FilterBtn
-                  key={cat.id}
-                  active={activeCategory === cat.id}
-                  onClick={() => setActiveCategory(cat.id)}
+                  active={activeCategory === 'all'}
+                  onClick={() => setActiveCategory('all')}
                   small
                 >
-                  {cat.name}
+                  Global
                 </FilterBtn>
-              ))}
-            </div>
-          )}
+                {categories.map((cat) => (
+                  <FilterBtn
+                    key={cat.id}
+                    active={activeCategory === cat.id}
+                    onClick={() => setActiveCategory(cat.id)}
+                    small
+                  >
+                    {cat.name}
+                  </FilterBtn>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
-      <section className="pb-20">
+      {/* ── 3. Data Output (Soft Cards) ── */}
+      <section className="py-20">
         <div className="container-etal">
-          <p className="mb-4 text-sm text-brand-gray">
-            {filtered.length} document{filtered.length !== 1 ? 's' : ''} found
-          </p>
+          
+          <div className="mb-10 flex items-center justify-between px-6">
+            <div className="flex items-center gap-3">
+              <div className="h-2 w-2 rounded-full bg-[#229264] animate-pulse" />
+              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#131414]/30">
+                {filtered.length} Objects Indexed
+              </p>
+            </div>
+            <div className="h-px flex-1 mx-8 bg-gray-100 hidden md:block" />
+            <Database size={16} className="text-gray-200" />
+          </div>
+
           {filtered.length > 0 ? (
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {filtered.map((doc) => (
                 <DownloadCard key={doc.id} doc={doc} />
               ))}
             </div>
           ) : (
-            <div className="py-16 text-center">
-              <Download size={32} className="mx-auto mb-3 text-brand-gray-mid" />
-              <p className="mb-1 font-headline text-2xl text-brand-dark">No documents found</p>
-              <p className="text-sm text-brand-gray">
-                {downloads.length === 0
-                  ? 'Documents will appear here once added via the admin dashboard.'
-                  : 'Try adjusting your search text or filters.'}
+            /* Empty State Capsule */
+            <div className="py-32 text-center rounded-[3rem] border border-dashed border-gray-200 bg-white shadow-inner">
+              <div className="h-20 w-20 rounded-full bg-gray-50 flex items-center justify-center mx-auto mb-6 text-gray-200">
+                <FileText size={40} strokeWidth={1} />
+              </div>
+              <p className="mb-2 font-headline text-2xl font-bold text-[#131414]">QUERY_ZERO_RESULTS</p>
+              <p className="text-[14px] text-[#131414]/40 max-w-sm mx-auto font-medium leading-relaxed px-6">
+                No technical assets match your active filter parameters. Try adjusting the search or category global filters.
               </p>
             </div>
           )}
@@ -150,6 +181,7 @@ export default function DownloadsClient({ downloads, categories }: Props) {
   )
 }
 
+// ── 4. Industrial Pill Filter Button ──
 function FilterBtn({
   active,
   onClick,
@@ -164,19 +196,20 @@ function FilterBtn({
   return (
     <button
       onClick={onClick}
-      className={`
-        shrink-0 font-body font-semibold transition-all duration-150 whitespace-nowrap rounded-full
-        ${small ? 'px-3 py-1 text-[11px]' : 'px-4 py-2 text-xs'}
-        ${active
-          ? 'bg-brand-green text-white shadow-[0_2px_8px_rgba(34,146,100,0.25)]'
-          : 'border border-[#e5e7eb] bg-white text-brand-gray hover:border-brand-green/60 hover:text-brand-dark'}
-      `}
+      className={cn(
+        'shrink-0 font-bold transition-all duration-300 whitespace-nowrap rounded-full border select-none',
+        small ? 'px-4 py-2 text-[10px] uppercase tracking-widest' : 'px-6 py-2.5 text-[12px] uppercase tracking-widest',
+        active
+          ? 'bg-[#131414] border-[#131414] text-white shadow-lg shadow-black/10 scale-105'
+          : 'bg-white border-gray-100 text-[#131414]/40 hover:border-[#229264]/30 hover:bg-gray-50 hover:text-[#229264]'
+      )}
     >
       {children}
     </button>
   )
 }
 
+// ── 5. Technical Asset Card (Pill Style) ──
 function DownloadCard({ doc }: { doc: DownloadWithCategory }) {
   const Icon = FILE_TYPE_ICONS[doc.file_type] || FileText
   const colorClass = FILE_TYPE_COLORS[doc.file_type] || FILE_TYPE_COLORS.other
@@ -186,42 +219,45 @@ function DownloadCard({ doc }: { doc: DownloadWithCategory }) {
       href={doc.file_url}
       target="_blank"
       rel="noopener noreferrer"
-      className="download-card group"
+      className="group relative flex flex-col p-8 bg-white border border-gray-100 rounded-[2.5rem] transition-all duration-500 hover:shadow-2xl hover:shadow-[#229264]/5 hover:-translate-y-2 overflow-hidden"
     >
-      {/* Icon */}
-      <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${colorClass}`}>
-        <Icon size={20} />
-      </div>
-
-      {/* Content */}
-      <div className="flex-1 min-w-0">
-        <p className="font-body font-semibold text-sm text-brand-dark group-hover:text-brand-green transition-colors leading-snug line-clamp-2">
-          {doc.title}
-        </p>
-        {doc.product && (
-          <p className="font-body text-xs text-brand-gray mt-1">
-            {doc.product.name}
-          </p>
-        )}
-        <div className="flex items-center gap-3 mt-2">
-          <span className="font-body text-[10px] font-semibold uppercase tracking-widest text-brand-gray/60">
-            {doc.file_type}
-          </span>
-          {doc.file_size_bytes && (
-            <>
-              <span className="text-brand-gray-mid">·</span>
-              <span className="font-body text-[10px] text-brand-gray/60">
-                {formatFileSize(doc.file_size_bytes)}
-              </span>
-            </>
-          )}
+      <div className="flex items-start justify-between mb-8">
+        {/* Icon with Soft Background */}
+        <div className={cn('w-14 h-14 rounded-2xl flex items-center justify-center transition-transform group-hover:rotate-12 duration-500', colorClass)}>
+          <Icon size={24} strokeWidth={1.5} />
+        </div>
+        
+        {/* Download Action Pill */}
+        <div className="h-10 w-10 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center text-gray-300 group-hover:bg-[#229264] group-hover:text-white transition-all duration-500 shadow-sm">
+          <Download size={16} />
         </div>
       </div>
 
-      {/* Download arrow */}
-      <div className="flex-shrink-0 self-center">
-        <Download size={16} className="text-brand-gray-mid group-hover:text-brand-green transition-colors" />
+      <div className="space-y-2 flex-1">
+        <h3 className="font-bold text-[16px] text-[#131414] group-hover:text-[#229264] transition-colors leading-tight">
+          {doc.title}
+        </h3>
+        {doc.product && (
+          <p className="text-[13px] text-[#131414]/40 font-medium">
+            {doc.product.name}
+          </p>
+        )}
       </div>
+
+      {/* Meta Footer */}
+      <div className="mt-8 pt-6 border-t border-gray-50 flex items-center justify-between">
+        <span className="text-[10px] font-bold uppercase tracking-widest px-3 py-1 bg-gray-50 text-[#131414]/30 rounded-full group-hover:bg-[#229264]/5 group-hover:text-[#229264] transition-colors">
+          {doc.file_type}
+        </span>
+        {doc.file_size_bytes && (
+          <span className="font-mono text-[11px] font-bold text-gray-300">
+            {formatFileSize(doc.file_size_bytes)}
+          </span>
+        )}
+      </div>
+
+      {/* Subtle background glow on hover */}
+      <div className="absolute -bottom-10 -right-10 w-24 h-24 bg-[#229264]/5 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
     </a>
   )
 }

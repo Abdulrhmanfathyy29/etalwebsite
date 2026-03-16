@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
-import { Package, Download, MessageSquare, Eye, ArrowRight, Plus, Upload } from 'lucide-react'
+import { Package, Download, MessageSquare, Eye, ArrowRight, Plus, Upload, Activity, ShieldCheck, Inbox } from 'lucide-react'
 import Link from 'next/link'
+import { cn } from '@/lib/utils'
 
 async function getDashboardStats() {
   const supabase = await createClient()
@@ -26,122 +27,162 @@ export default async function AdminDashboard() {
   const { products, downloads, messages, unread, recentMessages } = await getDashboardStats()
 
   const STATS = [
-    { label: 'Products',  value: products  ?? 0, icon: Package,       href: '/admin/products',  iconBg: 'bg-brand-green/10', iconColor: 'text-brand-green' },
-    { label: 'Downloads', value: downloads ?? 0, icon: Download,      href: '/admin/downloads', iconBg: 'bg-blue-50',        iconColor: 'text-blue-500' },
-    { label: 'Messages',  value: messages  ?? 0, icon: MessageSquare, href: '/admin/messages',  iconBg: 'bg-violet-50',      iconColor: 'text-violet-500' },
-    { label: 'Unread',    value: unread    ?? 0, icon: Eye,           href: '/admin/messages',  iconBg: 'bg-amber-50',       iconColor: 'text-amber-500' },
+    { label: 'Products',  value: products  ?? 0, icon: Package,       href: '/admin/products',  color: '#229264' },
+    { label: 'Downloads', value: downloads ?? 0, icon: Download,      href: '/admin/downloads', color: '#3b82f6' },
+    { label: 'Messages',  value: messages  ?? 0, icon: MessageSquare, href: '/admin/messages',  color: '#8b5cf6' },
+    { label: 'Unread',    value: unread    ?? 0, icon: Eye,           href: '/admin/messages',  color: '#f59e0b' },
   ]
 
   return (
-    <div className="space-y-8 max-w-5xl">
+    <div className="space-y-10 max-w-6xl mx-auto pb-20 animate-fade-in">
 
-      {/* Page header */}
-      <div className="pb-6 border-b border-brand-gray-mid">
-        <p className="eyebrow mb-2">Admin</p>
-        <h1 className="font-headline text-[clamp(1.8rem,4vw,2.5rem)] leading-none text-brand-dark">
-          Dashboard
-        </h1>
+      {/* ── 1️⃣ Header Console ── */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 px-2">
+        <div className="space-y-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#229264]/10 border border-[#229264]/20 text-[#229264] text-[10px] font-bold uppercase tracking-widest">
+            <Activity size={12} /> System Overview
+          </div>
+          <h1 className="font-headline font-bold text-[#131414] leading-tight" style={{ fontSize: 'clamp(2.5rem, 5vw, 3.5rem)' }}>
+            Control <span className="text-[#229264]">Center.</span>
+          </h1>
+          <p className="text-[14px] text-[#131414]/50 font-medium italic">
+            Monitoring global technical assets and inquiries.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-gray-50 border border-gray-100 text-[11px] font-bold text-gray-400">
+           <ShieldCheck size={14} className="text-[#229264]" />
+           <span>Secure Session Active</span>
+        </div>
       </div>
 
-      {/* Stat cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* ── 2️⃣ Metric Capsules ── */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
         {STATS.map((stat) => {
           const Icon = stat.icon
           return (
-            <Link key={stat.label} href={stat.href} className="stat-card group">
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-4 ${stat.iconBg}`}>
-                <Icon size={18} className={stat.iconColor} />
+            <Link 
+              key={stat.label} 
+              href={stat.href} 
+              className="group relative flex flex-col p-8 rounded-[2.5rem] bg-white border border-gray-100 shadow-sm transition-all duration-500 hover:shadow-2xl hover:shadow-black/[0.03] hover:-translate-y-2 overflow-hidden"
+            >
+              {/* Floating background icon */}
+              <Icon size={80} strokeWidth={0.5} className="absolute -top-4 -right-4 opacity-[0.03] group-hover:opacity-[0.08] transition-all duration-500 group-hover:scale-110" style={{ color: stat.color }} />
+              
+              <div className="relative z-10">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="h-12 w-12 rounded-2xl flex items-center justify-center transition-transform group-hover:rotate-12 duration-500" style={{ backgroundColor: `${stat.color}15`, color: stat.color }}>
+                    <Icon size={22} />
+                  </div>
+                  <ArrowRight size={16} className="text-gray-200 group-hover:text-[#131414] transition-all group-hover:translate-x-1" />
+                </div>
+                
+                <p className="font-headline text-[2.8rem] leading-none text-[#131414] mb-1 tracking-tighter">
+                  {stat.value}
+                </p>
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#131414]/30 group-hover:text-[#229264] transition-colors">
+                  {stat.label}
+                </p>
               </div>
-              <p className="font-headline text-[2.2rem] leading-none text-brand-dark mb-1">
-                {stat.value}
-              </p>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-brand-gray">
-                {stat.label}
-              </p>
-              <ArrowRight
-                size={13}
-                className="absolute top-5 right-5 text-brand-gray/20 group-hover:text-brand-green transition-colors"
-              />
             </Link>
           )
         })}
       </div>
 
-      {/* Quick actions */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {[
-          { href: '/admin/products/new',     label: 'Add Product',   desc: 'Create a new product listing', icon: Plus },
-          { href: '/admin/downloads/upload', label: 'Upload File',   desc: 'Add to the download library',  icon: Upload },
-          { href: '/admin/messages',          label: 'View Messages', desc: `${unread ?? 0} unread enquiries`, icon: MessageSquare },
-        ].map(({ href, label, desc, icon: Icon }) => (
-          <Link
-            key={href}
-            href={href}
-            className="flex items-center gap-4 p-5 rounded-2xl border border-[#e5e7eb] bg-white
-                       shadow-[0_1px_3px_rgba(15,23,42,0.04)]
-                       hover:border-brand-green/40 hover:shadow-[0_4px_16px_rgba(34,146,100,0.08)]
-                       transition-all duration-200 group"
-          >
-            <div className="w-9 h-9 rounded-full bg-brand-green/[0.08] flex items-center justify-center shrink-0
-                            group-hover:bg-brand-green/15 transition-colors">
-              <Icon size={16} className="text-brand-green" />
-            </div>
-            <div className="min-w-0">
-              <p className="font-body font-semibold text-sm text-brand-dark group-hover:text-brand-green transition-colors">
-                {label}
-              </p>
-              <p className="font-body text-xs text-brand-gray mt-0.5">{desc}</p>
-            </div>
-            <ArrowRight size={13} className="ml-auto text-brand-gray/20 group-hover:text-brand-green transition-colors shrink-0" />
-          </Link>
-        ))}
-      </div>
-
-      {/* Recent messages */}
-      <div className="panel overflow-hidden">
-        <div className="panel-header">
-          <span>Recent Messages</span>
-          <Link
-            href="/admin/messages"
-            className="text-[10px] font-semibold uppercase tracking-[0.18em] text-brand-green hover:text-brand-dark transition-colors"
-          >
-            View all
-          </Link>
-        </div>
-
-        {recentMessages.length > 0 ? (
-          <div className="divide-y divide-[#f3f4f6]">
-            {recentMessages.map((msg: any) => (
+      <div className="grid lg:grid-cols-[0.4fr_0.6fr] gap-10">
+        
+        {/* ── 3️⃣ Command Shortcuts ── */}
+        <div className="space-y-6">
+          <h3 className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#131414]/30 px-4">Fast Deployment</h3>
+          <div className="grid gap-4">
+            {[
+              { href: '/admin/products/new',     label: 'Add Product',   desc: 'New Technical Blueprint', icon: Plus },
+              { href: '/admin/downloads/upload', label: 'Upload Asset',   desc: 'Technical Documentation',  icon: Upload },
+              { href: '/admin/messages',          label: 'Inquiries',     desc: `${unread ?? 0} Pending Actions`, icon: Inbox },
+            ].map(({ href, label, desc, icon: Icon }) => (
               <Link
-                key={msg.id}
-                href={`/admin/messages/${msg.id}`}
-                className="flex items-start gap-4 px-6 py-4 hover:bg-[#fafafa] transition-colors group"
+                key={href}
+                href={href}
+                className="group flex items-center gap-5 p-6 rounded-[2rem] bg-white border border-gray-100 transition-all duration-500 hover:border-[#229264]/30 hover:shadow-xl hover:shadow-[#229264]/5"
               >
-                <div className={`w-2 h-2 rounded-full mt-2 shrink-0 ${
-                  msg.status === 'unread' ? 'bg-brand-green' : 'bg-brand-gray-mid'
-                }`} />
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <p className="font-body font-semibold text-sm text-brand-dark group-hover:text-brand-green transition-colors truncate">
-                      {msg.name}
-                    </p>
-                    {msg.company && (
-                      <span className="font-body text-xs text-brand-gray shrink-0">· {msg.company}</span>
-                    )}
-                  </div>
-                  <p className="font-body text-xs text-brand-gray mt-0.5 truncate">{msg.subject}</p>
+                <div className="h-12 w-12 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-[#229264] group-hover:text-white transition-all duration-500 shadow-inner">
+                  <Icon size={20} />
                 </div>
-                <span className="font-body text-[10px] text-brand-gray shrink-0 mt-0.5">
-                  {new Date(msg.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })}
-                </span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[14px] font-bold text-[#131414] group-hover:text-[#229264] transition-colors leading-tight">
+                    {label}
+                  </p>
+                  <p className="text-[11px] text-[#131414]/40 mt-1 font-medium">{desc}</p>
+                </div>
+                <ArrowRight size={14} className="text-gray-200 group-hover:text-[#229264] group-hover:translate-x-1 transition-all" />
               </Link>
             ))}
           </div>
-        ) : (
-          <div className="panel-body py-12 text-center font-body text-sm text-brand-gray">
-            No messages yet.
+        </div>
+
+        {/* ── 4️⃣ Activity Stream (Recent Messages) ── */}
+        <div className="bg-white rounded-[3rem] border border-gray-100 shadow-sm overflow-hidden flex flex-col">
+          <div className="px-8 py-6 border-b border-gray-50 flex items-center justify-between bg-gray-50/20">
+            <div className="flex items-center gap-3">
+               <div className="h-8 w-8 rounded-full bg-[#229264]/10 flex items-center justify-center text-[#229264]">
+                  <MessageSquare size={16} />
+               </div>
+               <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#131414]/40">Live Inquiries</h3>
+            </div>
+            <Link
+              href="/admin/messages"
+              className="px-4 py-2 rounded-full bg-[#131414] text-white text-[10px] font-bold uppercase tracking-widest hover:bg-[#229264] transition-all"
+            >
+              Archive
+            </Link>
           </div>
-        )}
+
+          <div className="flex-1 divide-y divide-gray-50">
+            {recentMessages.length > 0 ? (
+              recentMessages.map((msg: any) => (
+                <Link
+                  key={msg.id}
+                  href={`/admin/messages`}
+                  className="flex items-center gap-5 px-8 py-6 hover:bg-[#fcfcfc] transition-all group relative"
+                >
+                  <div className={cn(
+                    "w-1.5 h-1.5 rounded-full shrink-0 animate-pulse",
+                    msg.status === 'unread' ? 'bg-[#229264]' : 'bg-gray-200'
+                  )} />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <p className="font-bold text-[14px] text-[#131414] group-hover:text-[#229264] transition-colors truncate">
+                        {msg.name}
+                      </p>
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-gray-300">
+                        {msg.company ? `· ${msg.company}` : ''}
+                      </span>
+                    </div>
+                    <p className="text-[12px] text-[#131414]/40 font-medium truncate">{msg.subject}</p>
+                  </div>
+                  <div className="text-[10px] font-bold text-gray-300 uppercase tracking-tighter">
+                    {new Date(msg.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })}
+                  </div>
+                </Link>
+              ))
+            ) : (
+              <div className="py-20 text-center flex flex-col items-center gap-3">
+                <div className="h-14 w-14 rounded-full bg-gray-50 flex items-center justify-center text-gray-200">
+                   <Inbox size={24} />
+                </div>
+                <p className="text-[13px] text-gray-400 font-medium">Inbox is empty</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Footer System Branding */}
+      <div className="px-8 flex items-center gap-4 text-[10px] font-mono font-bold uppercase tracking-[0.4em] text-[#131414]/20">
+         <div className="h-1.5 w-1.5 rounded-full bg-[#229264]" />
+         <span>Asset Security Active</span>
+         <div className="h-1.5 w-1.5 rounded-full bg-gray-200 ml-auto" />
+         <span>V_3.1.0_PRO</span>
       </div>
     </div>
   )

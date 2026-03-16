@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image' // تم إضافة استدعاء Image
 import { usePathname } from 'next/navigation'
-import { Menu, X, ChevronDown, ArrowRight } from 'lucide-react'
+import { Menu, X, ChevronDown, ArrowRight, ArrowUpRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const PRODUCTS_DROPDOWN = [
@@ -46,28 +47,29 @@ export default function Navbar() {
     <>
       <header
         className={cn(
-          'fixed inset-x-0 top-0 z-40 transition-all duration-200',
-          scrolled ? 'bg-white/90 backdrop-blur border-b border-brand-gray-mid/60 shadow-sm' : 'bg-white'
+          'fixed inset-x-0 top-0 z-50 transition-all duration-300',
+          scrolled 
+            ? 'bg-white/85 backdrop-blur-md border-b border-gray-200 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)]' 
+            : 'bg-white border-b border-transparent'
         )}
       >
-        <div className="container-etal flex h-16 items-center justify-between gap-4">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 rounded-full px-2 py-1 hover:bg-brand-gray-light/60 transition-colors">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-green text-white text-sm font-semibold">
-              E
-            </div>
-            <div className="flex flex-col leading-tight">
-              <span className="text-sm font-semibold tracking-[0.18em] text-brand-dark uppercase">
-                ETAL
-              </span>
-              <span className="text-[10px] font-medium uppercase tracking-[0.22em] text-brand-gray">
-                Electrical protection
-              </span>
-            </div>
+        <div className="container-etal flex h-20 items-center justify-between gap-4">
+          
+          {/* 1️⃣ Elevated Image Logo */}
+          <Link href="/" className="group flex items-center transition-opacity hover:opacity-80">
+            {/* ضع اللوجو الخاص بك في مجلد public واسمه logo.png */}
+            <Image 
+              src="/logo.png" 
+              alt="ETAL Logo" 
+              width={140} 
+              height={40} 
+              className="h-10 w-auto object-contain"
+              priority
+            />
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden items-center gap-3 md:flex">
+          <nav className="hidden items-center gap-1 md:flex">
             {NAV_LINKS.map((link) =>
               link.hasDropdown ? (
                 <div key={link.href} className="relative">
@@ -75,42 +77,54 @@ export default function Navbar() {
                     type="button"
                     onClick={() => setProductsOpen((o) => !o)}
                     className={cn(
-                      'inline-flex items-center gap-1 rounded-full px-3 py-2 text-sm transition-colors',
-                      isActive(link.href)
-                        ? 'bg-brand-green/5 text-brand-dark'
-                        : 'text-brand-gray hover:bg-brand-gray-light/80 hover:text-brand-dark'
+                      'group relative inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[13px] font-bold tracking-wide transition-colors',
+                      isActive(link.href) || productsOpen
+                        ? 'text-brand-green'
+                        : 'text-brand-gray hover:text-brand-dark hover:bg-gray-50'
                     )}
                   >
                     {link.label}
                     <ChevronDown
                       size={14}
                       className={cn(
-                        'transition-transform',
-                        productsOpen && 'rotate-180'
+                        'transition-transform duration-300',
+                        productsOpen ? 'rotate-180 text-brand-green' : 'opacity-50 group-hover:opacity-100'
                       )}
                     />
+                    {(isActive(link.href) || productsOpen) && (
+                      <span className="absolute bottom-1 left-1/2 w-4 -translate-x-1/2 h-[2px] rounded-t-full bg-brand-green" />
+                    )}
                   </button>
+                  
+                  {/* 2️⃣ Premium Dropdown Panel */}
                   {productsOpen && (
-                    <div className="absolute right-0 mt-2 w-64 rounded-2xl border border-brand-gray-mid bg-white shadow-[0_16px_40px_rgba(15,23,42,0.1)]">
-                      <div className="flex items-center justify-between border-b border-brand-gray-mid/60 px-4 py-2">
-                        <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-gray">
+                    <div className="absolute top-full right-0 mt-4 w-[320px] rounded-2xl border border-gray-100 bg-white/95 backdrop-blur-xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] overflow-hidden origin-top-right animate-in fade-in zoom-in-95 duration-200">
+                      
+                      <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50/50 px-5 py-3">
+                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-gray">
                           Product families
                         </span>
-                        <span className="h-2 w-2 rounded-full bg-brand-yellow" />
+                        <span className="flex h-2 w-2 relative">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-green opacity-40"></span>
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-green"></span>
+                        </span>
                       </div>
-                      <ul className="py-2">
+                      
+                      <ul className="p-2 space-y-1">
                         {PRODUCTS_DROPDOWN.map((item) => (
                           <li key={item.href}>
                             <Link
                               href={item.href}
-                              className="flex items-start gap-3 px-4 py-2.5 text-sm text-brand-gray hover:bg-brand-gray-light/70 hover:text-brand-dark transition-colors"
+                              className="group flex items-start gap-3 rounded-xl px-3 py-3 text-sm transition-all hover:bg-gray-50"
                             >
-                              <span className="mt-1 h-1.5 w-1.5 rounded-full bg-brand-green" />
+                              <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded border border-gray-100 bg-white shadow-sm transition-all group-hover:border-brand-green/30 group-hover:bg-brand-green/5">
+                                <ArrowUpRight size={12} className="text-gray-300 transition-all group-hover:text-brand-green" />
+                              </div>
                               <span className="flex-1">
-                                <span className="block font-medium text-brand-dark">
+                                <span className="block text-[13px] font-bold text-brand-dark group-hover:text-brand-green transition-colors">
                                   {item.label}
                                 </span>
-                                <span className="block text-[11px] text-brand-gray">
+                                <span className="block text-[11px] text-brand-gray/80 mt-0.5 leading-tight">
                                   {item.desc}
                                 </span>
                               </span>
@@ -118,13 +132,14 @@ export default function Navbar() {
                           </li>
                         ))}
                       </ul>
-                      <div className="border-t border-brand-gray-mid/60 px-4 py-2">
+                      
+                      <div className="border-t border-gray-100 bg-gray-50/50 p-3">
                         <Link
                           href="/products"
-                          className="inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-green hover:text-brand-dark"
+                          className="group flex w-full items-center justify-center gap-2 rounded-lg bg-white px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-brand-dark border border-gray-200 hover:border-brand-green hover:text-brand-green transition-all"
                         >
-                          All products
-                          <ArrowRight size={11} />
+                          View All Products
+                          <ArrowRight size={12} className="transition-transform group-hover:translate-x-1" />
                         </Link>
                       </div>
                     </div>
@@ -135,26 +150,38 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    'rounded-full px-3 py-2 text-sm transition-colors',
+                    'relative rounded-lg px-4 py-2 text-[13px] font-bold tracking-wide transition-colors',
                     isActive(link.href)
-                      ? 'bg-brand-green/5 text-brand-dark'
-                      : 'text-brand-gray hover:bg-brand-gray-light/80 hover:text-brand-dark'
+                      ? 'text-brand-green'
+                      : 'text-brand-gray hover:text-brand-dark hover:bg-gray-50'
                   )}
                 >
                   {link.label}
+                  {isActive(link.href) && (
+                    <span className="absolute bottom-1 left-1/2 w-4 -translate-x-1/2 h-[2px] rounded-t-full bg-brand-green" />
+                  )}
                 </Link>
               )
             )}
 
-            <Link href="/contact" className="btn-accent text-xs">
+            {/* 3️⃣ Refined CTA Button (Updated Colors) */}
+            <Link 
+              href="/contact" 
+              className="ml-4 px-6 py-2.5 rounded-xl bg-[#229264] text-white text-[12px] font-bold tracking-wide hover:bg-[#EBDC36] hover:text-brand-dark hover:shadow-lg hover:shadow-[#EBDC36]/30 transition-all duration-300"
+            >
               Request a quote
             </Link>
           </nav>
 
-          {/* Mobile toggle */}
+          {/* 4️⃣ Enhanced Mobile Toggle */}
           <button
             type="button"
-            className="inline-flex items-center justify-center rounded-full p-2 text-brand-dark hover:bg-brand-gray-light md:hidden"
+            className={cn(
+              "relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border transition-all md:hidden",
+              mobileOpen 
+                ? "border-brand-green bg-brand-green/10 text-brand-green" 
+                : "border-gray-200 bg-gray-50 text-brand-dark hover:bg-gray-100"
+            )}
             onClick={() => setMobileOpen((o) => !o)}
             aria-label="Toggle navigation"
           >
@@ -163,21 +190,23 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Mobile menu */}
+      {/* Mobile menu Overlay */}
       <div
         className={cn(
-          'fixed inset-0 z-30 bg-black/10 backdrop-blur-sm transition-opacity md:hidden',
+          'fixed inset-0 z-40 bg-brand-dark/20 backdrop-blur-sm transition-opacity duration-300 md:hidden',
           mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         )}
         onClick={() => setMobileOpen(false)}
       />
+      
+      {/* Mobile Menu Panel */}
       <nav
         className={cn(
-          'fixed inset-x-0 top-16 z-40 origin-top rounded-b-2xl border-b border-brand-gray-mid bg-white shadow-md transition-transform md:hidden',
-          mobileOpen ? 'translate-y-0' : '-translate-y-4 pointer-events-none opacity-0'
+          'fixed inset-x-0 top-20 z-50 origin-top rounded-b-3xl border-b border-gray-100 bg-white shadow-2xl transition-all duration-300 md:hidden',
+          mobileOpen ? 'translate-y-0 opacity-100' : '-translate-y-8 pointer-events-none opacity-0'
         )}
       >
-        <div className="container-etal py-4">
+        <div className="container-etal py-6 max-h-[calc(100vh-6rem)] overflow-y-auto">
           <ul className="space-y-1">
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
@@ -185,27 +214,27 @@ export default function Navbar() {
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
                   className={cn(
-                    'flex items-center justify-between rounded-xl px-3 py-2 text-sm transition-colors',
+                    'flex items-center justify-between rounded-xl px-4 py-3 text-[14px] font-bold transition-colors',
                     isActive(link.href)
-                      ? 'bg-brand-green/5 text-brand-dark'
-                      : 'text-brand-gray hover:bg-brand-gray-light/80 hover:text-brand-dark'
+                      ? 'bg-brand-green/10 text-brand-green'
+                      : 'text-brand-gray hover:bg-gray-50 hover:text-brand-dark'
                   )}
                 >
                   <span>{link.label}</span>
                   {link.hasDropdown && (
-                    <span className="text-[10px] uppercase tracking-[0.16em] text-brand-gray">
-                      Products
+                    <span className="text-[9px] uppercase tracking-[0.2em] text-gray-400">
+                      Catalog
                     </span>
                   )}
                 </Link>
                 {link.hasDropdown && (
-                  <ul className="mt-1 space-y-1 pl-3">
+                  <ul className="mt-2 mb-4 space-y-1 pl-4 border-l-2 border-gray-100 ml-4">
                     {PRODUCTS_DROPDOWN.map((item) => (
                       <li key={item.href}>
                         <Link
                           href={item.href}
                           onClick={() => setMobileOpen(false)}
-                          className="block rounded-xl px-3 py-2 text-xs text-brand-gray hover:bg-brand-gray-light/70 hover:text-brand-dark"
+                          className="block rounded-lg px-3 py-2 text-[13px] font-medium text-brand-gray hover:bg-gray-50 hover:text-brand-green transition-colors"
                         >
                           {item.label}
                         </Link>
@@ -216,13 +245,16 @@ export default function Navbar() {
               </li>
             ))}
           </ul>
-          <div className="mt-4 flex flex-col gap-2">
+          
+          <div className="mt-6 pt-6 border-t border-gray-100">
+            {/* Mobile CTA Button (Updated Colors) */}
             <Link
               href="/contact"
               onClick={() => setMobileOpen(false)}
-              className="btn-primary w-full justify-center text-xs"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#229264] px-4 py-3.5 text-[13px] font-bold text-white hover:bg-[#EBDC36] hover:text-brand-dark transition-colors"
             >
               Request a quote
+              <ArrowRight size={14} />
             </Link>
           </div>
         </div>
