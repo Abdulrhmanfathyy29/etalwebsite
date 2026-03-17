@@ -3,49 +3,55 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Mail, Phone, MapPin, Globe, ShieldCheck } from 'lucide-react'
+import type { Dictionary } from '@/lib/getDictionary'
 
-const PRODUCT_LINKS = [
-  { href: '/products/current-transformers', label: 'Current transformers' },
-  { href: '/products/hrc-fuse-links', label: 'HRC fuse links' },
-  { href: '/products/fuse-switch-disconnectors', label: 'Fuse switch disconnectors' },
-  { href: '/products/busbar-supports', label: 'Busbar supports' },
-]
+interface FooterProps {
+  dict: Dictionary
+  locale: string
+}
 
-const COMPANY_LINKS = [
-  { href: '/about', label: 'About ETAL' },
-  { href: '/sectors', label: 'Sectors' },
-  { href: '/downloads', label: 'Downloads' },
-  { href: '/contact', label: 'Contact' },
-]
-
-export default function Footer() {
+export default function Footer({ dict, locale }: FooterProps) {
+  const lp = (path: string) => `/${locale}${path}`
+  const f = dict.footer
   const year = new Date().getFullYear()
+
+  const PRODUCT_LINKS = [
+    { href: lp('/products/current-transformers'),      label: f.links.current_transformers },
+    { href: lp('/products/hrc-fuse-links'),            label: f.links.hrc_fuse_links },
+    { href: lp('/products/fuse-switch-disconnectors'), label: f.links.fuse_switch_disconnectors },
+    { href: lp('/products/busbar-supports'),           label: f.links.busbar_supports },
+  ]
+
+  const COMPANY_LINKS = [
+    { href: lp('/about'),     label: f.links.about },
+    { href: lp('/sectors'),   label: f.links.sectors },
+    { href: lp('/downloads'), label: f.links.downloads },
+    { href: lp('/contact'),   label: f.links.contact },
+  ]
 
   return (
     <footer className="relative bg-[#229264] mt-0 overflow-hidden shadow-xl">
-      
-      {/* ── 1️⃣ Engineering Background Decoration ── */}
+
       <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] bg-[size:32px_32px]" />
-      <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
-      
+      <div className="absolute top-0 end-0 w-96 h-96 bg-white/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
+
       <div className="relative container-etal pt-20 pb-10">
         <div className="grid gap-16 lg:grid-cols-12">
-          
+
           {/* BRAND COLUMN */}
           <div className="space-y-8 lg:col-span-5">
-            <Link href="/" className="inline-block transition-opacity hover:opacity-90">
-              <Image 
-                src="/logooo.png" 
-                alt="ETAL Logo" 
-                width={160} 
-                height={50} 
-                className="brightness-0 invert h-12 w-auto object-contain" 
+            <Link href={lp('')} className="inline-block transition-opacity hover:opacity-90">
+              <Image
+                src="/logooo.png"
+                alt="ETAL Logo"
+                width={160}
+                height={50}
+                className="brightness-0 invert h-12 w-auto object-contain"
               />
             </Link>
 
             <p className="max-w-sm text-[15px] leading-relaxed text-white/70 font-medium">
-              International manufacturer of electrical protection and measurement components. 
-              Precision-engineered in Fayoum, Egypt since 2007.
+              {f.tagline}
             </p>
 
             <div className="flex flex-wrap gap-3 pt-2">
@@ -58,7 +64,7 @@ export default function Footer() {
                 +20 xxx xxx xxxx
               </a>
             </div>
-            
+
             <div className="flex items-start gap-4 p-5 rounded-2xl bg-white/5 border border-white/10 text-sm text-white/70">
               <div className="h-8 w-8 rounded-full bg-white/10 flex items-center justify-center shrink-0">
                 <MapPin size={16} className="text-white/60" />
@@ -71,10 +77,10 @@ export default function Footer() {
           </div>
 
           {/* LINKS COLUMNS */}
-          <div className="grid grid-cols-2 gap-8 lg:col-span-6 lg:ml-auto">
+          <div className="grid grid-cols-2 gap-8 lg:col-span-6 lg:ms-auto">
             <div className="space-y-8">
               <h3 className="text-[11px] font-bold uppercase tracking-[0.3em] text-white/40 border-b border-white/10 pb-3">
-                Products Range
+                {f.products_heading}
               </h3>
               <ul className="space-y-4">
                 {PRODUCT_LINKS.map((link) => (
@@ -90,7 +96,7 @@ export default function Footer() {
 
             <div className="space-y-8">
               <h3 className="text-[11px] font-bold uppercase tracking-[0.3em] text-white/40 border-b border-white/10 pb-3">
-                Organization
+                {f.company_heading}
               </h3>
               <ul className="space-y-4">
                 {COMPANY_LINKS.map((link) => (
@@ -114,14 +120,14 @@ export default function Footer() {
             </span>
             <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white/60">
               <ShieldCheck size={12} className="text-[#EBDC36]" />
-              ISO 9001 Certified
+              {f.iso_certified}
             </div>
           </div>
 
           <div className="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.2em] text-white/60">
             <div className="h-px w-8 bg-white/20" />
             <Globe size={14} className="text-white/40" />
-            <span>Engineered for protection.</span>
+            <span>{f.tagline_bottom}</span>
           </div>
         </div>
       </div>

@@ -38,6 +38,15 @@
     line-height: 1.65;
   }
 
+  html[lang="ar"] body {
+    font-family: var(--font-primary), system-ui, sans-serif;
+  }
+
+  /* Reset letter-spacing for Arabic — spacing between letters breaks joined script */
+  html[lang="ar"] * {
+    letter-spacing: 0 !important;
+  }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-headline leading-tight font-bold tracking-tight text-[#131414];
   }

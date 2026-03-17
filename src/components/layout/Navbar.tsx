@@ -2,29 +2,39 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import Image from 'next/image' // تم إضافة استدعاء Image
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { Menu, X, ChevronDown, ArrowRight, ArrowUpRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import LanguageSwitcher from '@/components/LanguageSwitcher'
+import type { Dictionary } from '@/lib/getDictionary'
 
-const PRODUCTS_DROPDOWN = [
-  { href: '/products/current-transformers', label: 'Current transformers', desc: 'Measurement & protection CTs' },
-  { href: '/products/hrc-fuse-links', label: 'HRC fuse links', desc: 'High rupturing capacity fuses' },
-  { href: '/products/fuse-switch-disconnectors', label: 'Fuse switch disconnectors', desc: 'Combined fuse & isolation' },
-  { href: '/products/busbar-supports', label: 'Busbar supports', desc: 'LV busbar insulation' },
-]
+interface NavbarProps {
+  dict: Dictionary
+  locale: string
+}
 
-const NAV_LINKS = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'About' },
-  { href: '/products', label: 'Products', hasDropdown: true },
-  { href: '/sectors', label: 'Sectors' },
-  { href: '/downloads', label: 'Downloads' },
-  { href: '/contact', label: 'Contact' },
-]
-
-export default function Navbar() {
+export default function Navbar({ dict, locale }: NavbarProps) {
   const pathname = usePathname()
+  const lp = (path: string) => `/${locale}${path}`
+  const n = dict.navbar
+
+  const PRODUCTS_DROPDOWN = [
+    { href: lp('/products/current-transformers'),      label: n.products_dropdown.current_transformers.label, desc: n.products_dropdown.current_transformers.desc },
+    { href: lp('/products/hrc-fuse-links'),            label: n.products_dropdown.hrc_fuse_links.label,       desc: n.products_dropdown.hrc_fuse_links.desc },
+    { href: lp('/products/fuse-switch-disconnectors'), label: n.products_dropdown.fuse_switch_disconnectors.label, desc: n.products_dropdown.fuse_switch_disconnectors.desc },
+    { href: lp('/products/busbar-supports'),           label: n.products_dropdown.busbar_supports.label,      desc: n.products_dropdown.busbar_supports.desc },
+  ]
+
+  const NAV_LINKS = [
+    { href: lp(''),         label: n.home },
+    { href: lp('/about'),   label: n.about },
+    { href: lp('/products'), label: n.products, hasDropdown: true },
+    { href: lp('/sectors'), label: n.sectors },
+    { href: lp('/downloads'), label: n.downloads },
+    { href: lp('/contact'), label: n.contact },
+  ]
+
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [productsOpen, setProductsOpen] = useState(false)
@@ -41,28 +51,26 @@ export default function Navbar() {
   }, [pathname])
 
   const isActive = (href: string) =>
-    href === '/' ? pathname === '/' : pathname.startsWith(href)
+    href === lp('') ? pathname === lp('') || pathname === lp('/') : pathname.startsWith(href)
 
   return (
     <>
       <header
         className={cn(
           'fixed inset-x-0 top-0 z-50 transition-all duration-300',
-          scrolled 
-            ? 'bg-white/85 backdrop-blur-md border-b border-gray-200 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)]' 
+          scrolled
+            ? 'bg-white/85 backdrop-blur-md border-b border-gray-200 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)]'
             : 'bg-white border-b border-transparent'
         )}
       >
         <div className="container-etal flex h-20 items-center justify-between gap-4">
-          
-          {/* 1️⃣ Elevated Image Logo */}
-          <Link href="/" className="group flex items-center transition-opacity hover:opacity-80">
-            {/* ضع اللوجو الخاص بك في مجلد public واسمه logo.png */}
-            <Image 
-              src="/logo.png" 
-              alt="ETAL Logo" 
-              width={140} 
-              height={40} 
+
+          <Link href={lp('')} className="group flex items-center transition-opacity hover:opacity-80">
+            <Image
+              src="/logo.png"
+              alt="ETAL Logo"
+              width={140}
+              height={40}
               className="h-10 w-auto object-contain"
               priority
             />
@@ -95,21 +103,21 @@ export default function Navbar() {
                       <span className="absolute bottom-1 left-1/2 w-4 -translate-x-1/2 h-[2px] rounded-t-full bg-brand-green" />
                     )}
                   </button>
-                  
-                  {/* 2️⃣ Premium Dropdown Panel */}
+
+                  {/* Dropdown Panel */}
                   {productsOpen && (
-                    <div className="absolute top-full right-0 mt-4 w-[320px] rounded-2xl border border-gray-100 bg-white/95 backdrop-blur-xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] overflow-hidden origin-top-right animate-in fade-in zoom-in-95 duration-200">
-                      
+                    <div className="absolute top-full end-0 mt-4 w-[320px] rounded-2xl border border-gray-100 bg-white/95 backdrop-blur-xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] overflow-hidden origin-top-right animate-in fade-in zoom-in-95 duration-200">
+
                       <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50/50 px-5 py-3">
                         <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-gray">
-                          Product families
+                          {n.product_families}
                         </span>
                         <span className="flex h-2 w-2 relative">
                           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-green opacity-40"></span>
                           <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-green"></span>
                         </span>
                       </div>
-                      
+
                       <ul className="p-2 space-y-1">
                         {PRODUCTS_DROPDOWN.map((item) => (
                           <li key={item.href}>
@@ -132,14 +140,14 @@ export default function Navbar() {
                           </li>
                         ))}
                       </ul>
-                      
+
                       <div className="border-t border-gray-100 bg-gray-50/50 p-3">
                         <Link
-                          href="/products"
+                          href={lp('/products')}
                           className="group flex w-full items-center justify-center gap-2 rounded-lg bg-white px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-brand-dark border border-gray-200 hover:border-brand-green hover:text-brand-green transition-all"
                         >
-                          View All Products
-                          <ArrowRight size={12} className="transition-transform group-hover:translate-x-1" />
+                          {n.view_all_products}
+                          <ArrowRight size={12} className="transition-transform ltr:group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
                         </Link>
                       </div>
                     </div>
@@ -164,23 +172,24 @@ export default function Navbar() {
               )
             )}
 
-            {/* 3️⃣ Refined CTA Button (Updated Colors) */}
-            <Link 
-              href="/contact" 
-              className="ml-4 px-6 py-2.5 rounded-xl bg-[#229264] text-white text-[12px] font-bold tracking-wide hover:bg-[#EBDC36] hover:text-brand-dark hover:shadow-lg hover:shadow-[#EBDC36]/30 transition-all duration-300"
+            <LanguageSwitcher className="ms-2" />
+
+            <Link
+              href={lp('/contact')}
+              className="ms-2 px-6 py-2.5 rounded-xl bg-[#229264] text-white text-[12px] font-bold tracking-wide hover:bg-[#EBDC36] hover:text-brand-dark hover:shadow-lg hover:shadow-[#EBDC36]/30 transition-all duration-300"
             >
-              Request a quote
+              {n.request_quote}
             </Link>
           </nav>
 
-          {/* 4️⃣ Enhanced Mobile Toggle */}
+          {/* Mobile Toggle */}
           <button
             type="button"
             className={cn(
-              "relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border transition-all md:hidden",
-              mobileOpen 
-                ? "border-brand-green bg-brand-green/10 text-brand-green" 
-                : "border-gray-200 bg-gray-50 text-brand-dark hover:bg-gray-100"
+              'relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border transition-all md:hidden',
+              mobileOpen
+                ? 'border-brand-green bg-brand-green/10 text-brand-green'
+                : 'border-gray-200 bg-gray-50 text-brand-dark hover:bg-gray-100'
             )}
             onClick={() => setMobileOpen((o) => !o)}
             aria-label="Toggle navigation"
@@ -190,7 +199,7 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Mobile menu Overlay */}
+      {/* Mobile Overlay */}
       <div
         className={cn(
           'fixed inset-0 z-40 bg-brand-dark/20 backdrop-blur-sm transition-opacity duration-300 md:hidden',
@@ -198,7 +207,7 @@ export default function Navbar() {
         )}
         onClick={() => setMobileOpen(false)}
       />
-      
+
       {/* Mobile Menu Panel */}
       <nav
         className={cn(
@@ -228,7 +237,7 @@ export default function Navbar() {
                   )}
                 </Link>
                 {link.hasDropdown && (
-                  <ul className="mt-2 mb-4 space-y-1 pl-4 border-l-2 border-gray-100 ml-4">
+                  <ul className="mt-2 mb-4 space-y-1 ps-4 border-s-2 border-gray-100 ms-4">
                     {PRODUCTS_DROPDOWN.map((item) => (
                       <li key={item.href}>
                         <Link
@@ -245,16 +254,16 @@ export default function Navbar() {
               </li>
             ))}
           </ul>
-          
-          <div className="mt-6 pt-6 border-t border-gray-100">
-            {/* Mobile CTA Button (Updated Colors) */}
+
+          <div className="mt-6 pt-6 border-t border-gray-100 space-y-4">
+            <LanguageSwitcher />
             <Link
-              href="/contact"
+              href={lp('/contact')}
               onClick={() => setMobileOpen(false)}
               className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#229264] px-4 py-3.5 text-[13px] font-bold text-white hover:bg-[#EBDC36] hover:text-brand-dark transition-colors"
             >
-              Request a quote
-              <ArrowRight size={14} />
+              {n.request_quote}
+              <ArrowRight size={14} className="rtl:rotate-180" />
             </Link>
           </div>
         </div>

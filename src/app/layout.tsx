@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Poppins } from 'next/font/google'
+import { Poppins, Cairo } from 'next/font/google'
 import { cn } from '@/lib/utils'
 import './globals.css'
 
@@ -7,6 +7,13 @@ const poppins = Poppins({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
   variable: '--font-poppins',
+  display: 'swap',
+})
+
+const cairo = Cairo({
+  subsets: ['arabic', 'latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-cairo',
   display: 'swap',
 })
 
@@ -57,7 +64,7 @@ export default function RootLayout({
 }) {
   return (
     // Added scroll-smooth for native smooth anchor scrolling
-    <html lang="en" className={cn(poppins.variable, 'scroll-smooth')}>
+    <html lang="en" className={cn(poppins.variable, cairo.variable, 'scroll-smooth')}>
       <body 
         className={cn(
           'font-body antialiased',

@@ -1,0 +1,221 @@
+{
+  "navbar": {
+    "home": "Home",
+    "about": "About",
+    "products": "Products",
+    "sectors": "Sectors",
+    "downloads": "Downloads",
+    "contact": "Contact",
+    "request_quote": "Request a quote",
+    "product_families": "Product families",
+    "view_all_products": "View All Products",
+    "products_dropdown": {
+      "current_transformers": { "label": "Current transformers", "desc": "Measurement & protection CTs" },
+      "hrc_fuse_links": { "label": "HRC fuse links", "desc": "High rupturing capacity fuses" },
+      "fuse_switch_disconnectors": { "label": "Fuse switch disconnectors", "desc": "Combined fuse & isolation" },
+      "busbar_supports": { "label": "Busbar supports", "desc": "LV busbar insulation" }
+    }
+  },
+  "hero": {
+    "eyebrow": "Engineering Excellence Since 2007",
+    "headline_1": "Precision protection",
+    "headline_2": "for the low-voltage loop.",
+    "description": "ETAL designs and manufactures IEC-certified electrical components in Egypt, powering critical infrastructure for panel builders and global utilities.",
+    "cta_primary": "Explore Products",
+    "cta_secondary": "Technical Support",
+    "discover_catalog": "Discover Full Catalog",
+    "stat_founded": "Founded",
+    "stat_founded_sub": "Fayoum, Egypt",
+    "stat_factory": "Factory",
+    "stat_factory_sub": "ISO-certified",
+    "stat_products": "Products",
+    "stat_products_sub": "4 Families",
+    "stat_certified": "IEC",
+    "stat_certified_sub": "Global Standards",
+    "quick_ct_label": "Current Transformers",
+    "quick_ct_desc": "High-precision metering",
+    "quick_hrc_label": "HRC Fuse Links",
+    "quick_hrc_desc": "Reliable circuit protection",
+    "quick_fsd_label": "Fuse Switch Disconnectors",
+    "quick_fsd_desc": "Heavy-duty switching"
+  },
+  "stats": {
+    "year_founded": "Year founded",
+    "factory_floor": "Factory floor",
+    "quality_system": "Quality system",
+    "product_lines": "Product lines",
+    "quality_assurance": "Quality Assurance",
+    "certified_standards": "Certified Technical Standards"
+  },
+  "audience": {
+    "eyebrow": "Who We Serve",
+    "title": "Built for the Whole Chain",
+    "subtitle": "From design desk to installation, ETAL supports every role in the electrical project lifecycle.",
+    "phase": "PHASE",
+    "items": {
+      "consultant": {
+        "title": "Consultant",
+        "role": "Design Engineers",
+        "desc": "Detailed datasheets, CAD drawings and standards documentation to support specification and project design.",
+        "cta": "Technical Library"
+      },
+      "panel_builder": {
+        "title": "Panel Builder",
+        "role": "LV Manufacturers",
+        "desc": "Compact, certified components with full dimensional data and mounting accessories for LV assemblies.",
+        "cta": "Product Range"
+      },
+      "contractor": {
+        "title": "Contractor",
+        "role": "Installation Team",
+        "desc": "IEC-certified protection gear built for straightforward installation with full traceability and after-sales support.",
+        "cta": "Request a Quote"
+      }
+    }
+  },
+  "sectors": {
+    "eyebrow": "Expertise",
+    "title": "Built for demanding applications.",
+    "subtitle": "ETAL components are specified across power distribution, industrial, renewable and critical infrastructure projects.",
+    "view_all": "View All Sectors",
+    "explore_solutions": "Explore Solutions",
+    "items": {
+      "power_distribution": { "name": "Power Distribution", "desc": "Protection for LV/MV distribution networks and switchgear panels." },
+      "industrial": { "name": "Industrial", "desc": "Heavy-duty protection for manufacturing and process automation." },
+      "renewable_energy": { "name": "Renewable Energy", "desc": "Solutions for solar inverters, wind and BESS systems." },
+      "rail_transport": { "name": "Rail & Transport", "desc": "Certified protection for rail and transit infrastructure." },
+      "data_centres": { "name": "Data Centres", "desc": "High-reliability protection for critical IT infrastructure." },
+      "oil_gas": { "name": "Oil & Gas", "desc": "Robust protection for hazardous energy environments." }
+    }
+  },
+  "featured": {
+    "eyebrow": "Product Range",
+    "title": "The complete LV loop.",
+    "subtitle": "Four concise families covering measurement, protection and switching.",
+    "all_products": "All Products",
+    "view_specifications": "View Specifications",
+    "view_range": "View Range",
+    "static": {
+      "ct":  { "cat": "Measurement", "name": "Current Transformers",      "desc": "Precision-wound resin CTs for LV panel metering and protection." },
+      "hrc": { "cat": "Protection",  "name": "HRC Fuse Links",            "desc": "High rupturing capacity fuse links for fast fault clearance." },
+      "fsd": { "cat": "Switchgear",  "name": "Fuse Switch Disconnectors", "desc": "Combined fuse and switch for safe LV circuit isolation." },
+      "bs":  { "cat": "Switchgear",  "name": "Busbar Supports",           "desc": "Insulated clamps and supports for LV busbar systems." }
+    }
+  },
+  "cta": {
+    "eyebrow": "Resources & Support",
+    "headline_1": "Technical documentation",
+    "headline_2": "on demand.",
+    "description": "Access datasheets, IEC certificates, and CAD drawings for our complete electrical range. Everything you need for your technical submittals, ready for instant download.",
+    "download_library": "Download Library",
+    "talk_engineer": "Talk to an engineer",
+    "no_registration": "No registration required for public documentation"
+  },
+  "footer": {
+    "tagline": "International manufacturer of electrical protection and measurement components. Precision-engineered in Fayoum, Egypt since 2007.",
+    "products_heading": "Products Range",
+    "company_heading": "Organization",
+    "iso_certified": "ISO 9001 Certified",
+    "tagline_bottom": "Engineered for protection.",
+    "links": {
+      "current_transformers": "Current transformers",
+      "hrc_fuse_links": "HRC fuse links",
+      "fuse_switch_disconnectors": "Fuse switch disconnectors",
+      "busbar_supports": "Busbar supports",
+      "about": "About ETAL",
+      "sectors": "Sectors",
+      "downloads": "Downloads",
+      "contact": "Contact"
+    }
+  },
+  "contact": {
+    "eyebrow": "Communication Hub",
+    "headline_1": "Get in touch with",
+    "headline_2": "ETAL Experts.",
+    "description": "Our engineering and support teams are standing by to assist with sales inquiries, technical specifications, or global export logistics.",
+    "directory": "Directory",
+    "ref_code": "HQ_01",
+    "global_support": "Global Support",
+    "direct_line": "Direct Line",
+    "production_facility": "Production Facility",
+    "operational_hours": "Operational Hours",
+    "location_value": "Fayoum Industrial Zone, Egypt",
+    "hours_value": "Sun – Thu, 08:00 – 17:00 EET",
+    "routing_table": "Routing Table",
+    "sales_orders": "Sales & Orders",
+    "technical_support": "Technical Support",
+    "export_division": "Export Division",
+    "inquiry_headline_1": "Inquiry",
+    "inquiry_headline_2": "Dispatch.",
+    "form_notice": "All technical requests are processed via secure channel.",
+    "secure_protocol": "Secure Protocol",
+    "location_name": "Fayoum Industrial Zone",
+    "location_subtitle": "Primary Manufacturing Hub",
+    "form": {
+      "full_name": "Full Name",
+      "company": "Company / Entity",
+      "email": "Email Address",
+      "phone": "Contact Phone",
+      "country": "Location / Country",
+      "primary_interest": "Primary Interest",
+      "select_category": "Select a category...",
+      "subject": "Inquiry Subject",
+      "message": "Technical Message",
+      "submit": "Dispatch Inquiry",
+      "submitting": "Transmitting...",
+      "new_request": "New Request",
+      "success_title": "Transmission Successful",
+      "success_body": "Your technical inquiry has been logged. An ETAL engineer will review your specifications and respond shortly.",
+      "status_queued": "STATUS: QUEUED FOR ANALYSIS",
+      "error_title": "Network Exception",
+      "error_body": "Failed to dispatch request. Please verify credentials or try again.",
+      "secure_link": "Secure Link Established",
+      "encrypted": "Encrypted Data Transfer Active",
+      "options": {
+        "current_transformers": "Current Transformers",
+        "hrc_fuse_links": "HRC Fuse Links",
+        "fuse_switch_disconnectors": "Fuse Switch Disconnectors",
+        "busbar_supports": "Busbar Supports",
+        "general": "General Enquiry"
+      }
+    }
+  },
+  "products_page": {
+    "eyebrow": "Engineering Catalog",
+    "headline_1": "Precision for the",
+    "headline_2": "Low-Voltage Loop.",
+    "description": "Explore our core component families, engineered to meet stringent international standards and rigorous industrial environments.",
+    "system_category": "System Category",
+    "full_collection": "Full Collection",
+    "technical_specs": "Technical Specs",
+    "sync_in_progress": "Catalog synchronization in progress...",
+    "static_categories": {
+      "current_transformers": { "name": "Current Transformers", "description": "Precision measurement units." },
+      "hrc_fuse_links": { "name": "HRC Fuse Links", "description": "Fault clearance standards." },
+      "fuse_switch_disconnectors": { "name": "Switch Disconnectors", "description": "Isolation components." },
+      "busbar_supports": { "name": "Busbar Supports", "description": "Reinforced spacing units." }
+    }
+  },
+  "product_detail": {
+    "breadcrumb_home": "Home",
+    "breadcrumb_catalog": "Catalog",
+    "badge_asset": "Technical Asset",
+    "key_capabilities": "Key Capabilities",
+    "download_datasheet": "Technical Datasheet",
+    "request_quote": "Request Quote",
+    "specifications": "Specifications",
+    "specs_headline_1": "Technical Data",
+    "specs_headline_2": "Sheets."
+  },
+  "common": {
+    "learn_more": "Learn more",
+    "view_all": "View all",
+    "download": "Download",
+    "contact_us": "Contact us",
+    "get_in_touch": "Get in touch",
+    "back": "Back",
+    "loading": "Loading…",
+    "error": "Something went wrong",
+    "not_found": "Page not found"
+  }
+}

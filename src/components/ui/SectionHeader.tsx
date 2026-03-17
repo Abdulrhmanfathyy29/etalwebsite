@@ -54,7 +54,7 @@ export default function SectionHeader({
           
           {/* Subtle Accent Line - Only if not centered to create an anchor point */}
           {!center && (
-            <div className="absolute -left-8 top-0 bottom-0 w-[2px] bg-gradient-to-b from-[#229264]/40 via-[#229264]/10 to-transparent hidden md:block rounded-full" />
+            <div className="absolute -start-8 top-0 bottom-0 w-[2px] bg-gradient-to-b from-[#229264]/40 via-[#229264]/10 to-transparent hidden md:block rounded-full" />
           )}
         </div>
       )}

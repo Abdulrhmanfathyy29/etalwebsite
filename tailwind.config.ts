@@ -24,9 +24,9 @@ const config: Config = {
         },
       },
       fontFamily: {
-        // Use Poppins for all typography (headlines + body)
-        headline: ['var(--font-poppins)', 'system-ui', 'sans-serif'],
-        body:     ['var(--font-poppins)', 'system-ui', 'sans-serif'],
+        // --font-primary is set per-locale in [locale]/layout.tsx
+        headline: ['var(--font-primary)', 'system-ui', 'sans-serif'],
+        body:     ['var(--font-primary)', 'system-ui', 'sans-serif'],
       },
       fontSize: {
         'display-2xl': ['8rem',  { lineHeight: '0.9',  letterSpacing: '-0.02em', fontWeight: '700' }],
